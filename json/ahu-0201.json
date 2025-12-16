@@ -1,0 +1,7 @@
+[
+    { "id": 101, "code": "AHU-0201", "name": "Unidade de Tratamento Secundária", "type": "equipment", "module": "hvac", "range": "42.000,0", "unit": "kcal/h", "image": "fotos/ahu.jpg", "description": "MODELO: TRANE - NÚMERO DE SÉRIE: 112 - TAG: AHU-0201" },
+    { "id": 102, "code": "AHU-0201 TT-001", "name": "Temp Entrada", "type": "temperature", "module": "hvac", "range": "0-80", "unit": "°C", "image": "fotos/MT-TT.jpg", "description": "Temperatura de entrada da AHU 0201." },
+    { "id": 103, "code": "AHU-0201 PDT-001", "name": "Pressão Diferencial G4", "type": "pressure", "module": "hvac", "range": "0-500", "unit": "Pa", "image": "fotos/PDT_22ADP-584.jpg", "description": "Filtros primários." },
+    { "id": 104, "code": "AHU-0201 V-001", "name": "Válvula de Água Gelada", "type": "valve", "module": "hvac", "range": "0-100", "unit": "%", "image": "", "description": "Controle de fluxo de água gelada." },
+    { "id": 105, "code": "AHU-0201 YS-001", "name": "Detector de Fumaça", "type": "detect", "module": "hvac", "range": "ON/OFF", "unit": "-", "image": "fotos/SM-501-P.jpg", "description": "Segurança contra incêndio." }
+]
