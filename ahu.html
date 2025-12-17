@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel AHU - Padrão Hemobrás</title>
+    <title>Painel AHU - Hemobrás</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
@@ -14,10 +14,10 @@
                 extend: {
                     colors: {
                         hemo: {
-                            brand: '#781316',    /* O Vinho Oficial do Site */
-                            brandLight: '#962A2D', /* Um tom um pouco mais claro para hover */
-                            gray: '#F8F8F8',     /* Fundo cinza bem claro (gov) */
-                            text: '#333333',     /* Texto padrão escuro */
+                            brand: '#781316',    /* Vinho Oficial */
+                            brandLight: '#962A2D',
+                            gray: '#F8F8F8',     /* Fundo */
+                            text: '#333333',     /* Texto */
                         }
                     },
                     fontFamily: {
@@ -30,20 +30,32 @@
 </head>
 <body class="h-screen w-screen bg-hemo-gray text-hemo-text flex flex-col overflow-hidden">
 
-        <div class="bg-hemo-brand text-white shadow-lg shrink-0 relative z-20">
+    <div class="bg-white border-b border-gray-200 px-6 py-1 flex justify-between items-center text-[10px] md:text-xs text-gray-500 uppercase font-bold tracking-wider shrink-0">
+        <div class="flex gap-4">
+            <span>Brasil</span>
+            <span class="hidden md:inline">Acesso à informação</span>
+        </div>
+        <div class="flex gap-4">
+            <span>Acessibilidade</span>
+            <span>Contatos</span>
+        </div>
+    </div>
+
+    <div class="bg-hemo-brand text-white shadow-lg shrink-0 relative z-20">
         <div class="max-w-7xl mx-auto px-6 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
             
             <div class="flex items-center gap-4 w-full md:w-auto">
-                <div class="bg-white px-3 py-1.5 rounded-lg shadow-sm border-b-2 border-red-900/20">
+                
+                <a href="index.html" class="flex items-center justify-center h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/10 shrink-0" title="Voltar ao Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                    </svg>
+                </a>
+
+                <div class="bg-white px-3 py-1.5 rounded-lg shadow-sm border-b-2 border-red-900/20 shrink-0">
                     <img src="fotos/logo-hemobras.png" alt="Logo Hemobrás" class="h-10 md:h-12 w-auto object-contain">
                 </div>
-                <a href="index.html" class="flex items-center justify-center h-10 w-10 rounded-full bg-white/10 hover:bg-white/20 text-white mr-4 transition-colors" title="Voltar ao Menu">
-    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-    </svg>
-</a>
-
-<div class="flex items-center gap-4 w-full md:w-auto">
+                
                 <div class="hidden md:flex flex-col justify-center border-l border-red-800/50 pl-4 h-10">
                     <h1 class="text-xs font-bold uppercase tracking-widest text-white leading-tight">Painel de</h1>
                     <h1 class="text-xs font-bold uppercase tracking-widest text-red-200 leading-tight">Ativos</h1>
@@ -55,7 +67,6 @@
                 <select id="ahu-selector" class="bg-transparent text-white font-mono font-bold text-sm outline-none cursor-pointer w-full md:w-auto">
                     <option value="ahu-0201" class="bg-hemo-brand text-white">AHU-0201</option>
                     <option value="ahu-0209" class="bg-hemo-brand text-white">AHU-0209</option>
-                    
                 </select>
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 text-red-200 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
@@ -64,14 +75,13 @@
         </div>
     </div>
 
-    <div class="flex-1 overflow-hidden relative flex flex-col max-w-7xl mx-auto w-full pt-4 md:pt-6 px-4">
+    <div class="flex-1 flex flex-col min-h-0 w-full max-w-7xl mx-auto pt-4 md:pt-6 px-4">
         
         <div class="flex flex-col md:flex-row justify-between items-end md:items-center gap-4 mb-6 shrink-0">
             
             <div class="relative w-full md:w-1/2 group">
                 <input type="text" id="search-input" placeholder="Buscar instrumento (Tag, Nome)..."
                     class="w-full pl-5 pr-12 py-3 bg-white border border-gray-300 rounded-full shadow-sm text-sm text-gray-600 focus:outline-none focus:border-hemo-brand focus:ring-1 focus:ring-hemo-brand transition-all" />
-                
                 <div class="absolute right-1 top-1 bottom-1 w-10 bg-hemo-brand rounded-full flex items-center justify-center shadow-sm group-focus-within:bg-hemo-brandLight transition-colors cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -87,7 +97,7 @@
             </div>
         </div>
 
-        <div id="grid-container" class="flex-1 overflow-y-auto pb-6 pr-2 custom-scrollbar grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 auto-rows-min">
+        <div id="grid-container" class="flex-1 overflow-y-auto min-h-0 pb-6 pr-2 custom-scrollbar grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 auto-rows-min content-start">
             </div>
         
         <div class="py-2 text-center text-[10px] text-gray-400 border-t border-gray-200 uppercase tracking-widest mt-2 shrink-0">
