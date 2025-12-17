@@ -1,81 +1,55 @@
 // --- VARIÁVEIS GLOBAIS ---
-let currentInstruments = []; // Começa vazia
+let currentInstruments = []; 
 let searchTerm = '';
 
-// --- CONFIGURAÇÃO VISUAL (FIXA) ---
+// --- CONFIGURAÇÃO VISUAL (Cores mais sóbrias/institucionais) ---
 const typeInfo = {
-    equipment: { label: 'AHU', icon: '🏭', color: 'blue' },
-    pressure: { label: 'Instrumentação de Pressão', icon: '⏲️', color: 'cyan' },
-    temperature: { label: 'Sensor de Temperatura', icon: '🌡️', color: 'red' },
-    humidity: { label: 'Sensor de Umidade', icon: '💧', color: 'indigo' },
-    valve: { label: 'Válvula / Mecânico', icon: '🔧', color: 'orange' },
-    detect: { label: 'Detectores', icon: '🔥', color: 'red' },
-    general: { label: 'Uso Geral', icon: '📦', color: 'slate' }
+    // Usando cores mais fechadas para combinar com o tom "Gov"
+    equipment: { label: 'AHU', icon: '🏭', color: 'slate' },
+    pressure: { label: 'Pressão', icon: '⏲️', color: 'blue' },
+    temperature: { label: 'Temperatura', icon: '🌡️', color: 'red' }, 
+    humidity: { label: 'Umidade', icon: '💧', color: 'cyan' },
+    valve: { label: 'Válvula/Mec.', icon: '🔧', color: 'orange' },
+    detect: { label: 'Detecção', icon: '🚨', color: 'red' },
+    general: { label: 'Geral', icon: '📦', color: 'slate' }
 };
 
 const moduleInfo = {
-    hvac: { name: 'Sistemas HVAC & Utilidades' },
-    production: { name: 'Área de Produção' }
+    hvac: { name: 'HVAC & Utilidades' },
+    production: { name: 'Produção' }
 };
 
 // --- ELEMENTOS DO DOM ---
 const ahuSelector = document.getElementById('ahu-selector');
-const systemTitle = document.getElementById('system-title');
 const gridContainer = document.getElementById('grid-container');
 
-// --- FUNÇÃO DE CARREGAMENTO (FETCH) ---
+// --- FETCH ---
 async function loadSystemData(systemId) {
-    // 1. Mostra um aviso de "Carregando..." enquanto busca
     gridContainer.innerHTML = `
-        <div class="col-span-full flex justify-center items-center h-40 text-slate-400 animate-pulse">
-            <span class="text-2xl mr-2">🔄</span> Carregando dados do sistema...
+        <div class="col-span-full flex flex-col justify-center items-center h-40 text-hemo-brand animate-pulse opacity-70">
+            <span class="text-4xl mb-2">📥</span> 
+            <span class="font-semibold text-sm uppercase tracking-wide">Carregando dados...</span>
         </div>
     `;
 
     try {
-        // 2. Busca o arquivo JSON baseado no ID (ex: json/ahu-0209.json)
         const response = await fetch(`json/${systemId}.json`);
-        
-        if (!response.ok) {
-            throw new Error(`Erro HTTP: ${response.status}`);
-        }
-
-        // 3. Converte o texto do arquivo para Objeto JavaScript real
+        if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
         const data = await response.json();
-        
-        // 4. Salva na variável global e desenha na tela
         currentInstruments = data;
         renderGrid();
-
     } catch (error) {
         console.error("Erro ao carregar JSON:", error);
         gridContainer.innerHTML = `
-            <div class="col-span-full text-center p-6 text-red-400 border border-red-900/50 rounded-xl bg-red-900/20">
+            <div class="col-span-full text-center p-8 text-hemo-brand bg-red-50 border border-red-100 rounded-lg">
                 <h3 class="font-bold text-lg mb-2">Erro de Conexão</h3>
-                <p>Não foi possível carregar os dados de ${systemId}.</p>
-                <p class="text-xs mt-2 opacity-70">${error.message}</p>
+                <p class="text-gray-600 text-sm">Não foi possível carregar o arquivo: <strong>${systemId}</strong></p>
             </div>
         `;
     }
 }
 
-
-// --- ESCUTA A MUDANÇA NO SELETOR ---
-if (ahuSelector) {
-    ahuSelector.addEventListener('change', (e) => {
-        const selectedSystem = e.target.value; // ex: "ahu-0201"
-        loadSystemData(selectedSystem);
-    });
-}
-
-// --- BARRA DE BUSCA ---
-document.getElementById('search-input').addEventListener('input', (e) => {
-    searchTerm = e.target.value;
-    renderGrid();
-});
-
-
-// --- RENDERIZAÇÃO (CARD E GRID) ---
+// --- RENDER GRID (ESTILO GOV/INSTITUCIONAL) ---
 function renderGrid() {
     const countDisplay = document.getElementById('count-display');
     const totalDisplay = document.getElementById('total-display');
@@ -86,40 +60,42 @@ function renderGrid() {
     );
 
     countDisplay.innerText = filtered.length;
-    totalDisplay.innerText = `/ ${currentInstruments.length}`;
+    totalDisplay.innerText = filtered.length !== currentInstruments.length ? currentInstruments.length : currentInstruments.length;
     gridContainer.innerHTML = '';
 
     if (filtered.length === 0) {
-        if (currentInstruments.length === 0) return; // Se ainda não carregou nada, não mostra "não encontrado"
+        if (currentInstruments.length === 0) return; 
         gridContainer.innerHTML = `
-            <div class="col-span-full flex flex-col items-center justify-center h-64 text-slate-500 border-2 border-dashed border-slate-700 rounded-xl bg-slate-800/20">
+            <div class="col-span-full flex flex-col items-center justify-center h-64 text-gray-300 border-2 border-dashed border-gray-200 rounded-xl bg-gray-50/50">
                 <span class="text-4xl mb-2">🔍</span>
-                <p>Nenhum instrumento encontrado</p>
+                <p class="text-sm font-medium">Nenhum registro encontrado</p>
             </div>`;
         return;
     }
 
     filtered.forEach(inst => {
         const typeData = typeInfo[inst.type] || typeInfo.general;
-        const containerClasses = 'bg-slate-800/40 border-l-slate-600 border-slate-700 hover:bg-slate-700/60 hover:border-l-blue-400 hover:shadow-md hover:-translate-y-1';
-        const indicatorClasses = 'bg-slate-600 group-hover:bg-blue-400 transition-colors';
+        
+        // CARD: Branco, limpo, sombra suave. Hover com borda Vinho.
+        const containerClasses = 'bg-white border-gray-200 shadow-sm hover:shadow-md hover:border-hemo-brand hover:-translate-y-0.5';
+        const indicatorClasses = 'bg-gray-200 group-hover:bg-hemo-brand transition-colors';
 
         const card = document.createElement('button');
-        card.className = `group relative text-left p-4 rounded-xl border-l-[6px] border-y border-r transition-all duration-200 flex flex-col h-full ${containerClasses}`;
+        card.className = `group relative text-left p-4 rounded-lg border transition-all duration-200 flex flex-col h-full ${containerClasses}`;
         
         card.onclick = () => { openModal(inst); };
 
         let imageHtml = '';
         if (inst.image && inst.image.trim() !== '') {
             imageHtml = `
-                <div class="mb-4 flex items-center justify-center h-40 w-full bg-slate-900/50 rounded-lg overflow-hidden border border-slate-700/50 group-hover:border-slate-600 transition-colors">
+                <div class="mb-4 flex items-center justify-center h-32 w-full bg-gray-50 rounded border border-gray-100 group-hover:border-red-50 transition-colors">
                     <img src="${inst.image}" alt="${inst.code}" 
-                            onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'text-slate-600 text-4xl\'>${typeData.icon}</div>'" 
-                            class="h-full w-full object-contain p-2 transition-transform duration-500 group-hover:scale-110">
+                            onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'text-gray-300 text-4xl\'>${typeData.icon}</div>'" 
+                            class="h-full w-full object-contain p-2 mix-blend-multiply transition-transform duration-500 group-hover:scale-105">
                 </div>`;
         } else {
             imageHtml = `
-                <div class="mb-4 flex items-center justify-center h-40 w-full bg-slate-900/50 rounded-lg border border-slate-700/50 text-5xl text-slate-600 group-hover:text-blue-400 transition-colors shadow-inner">
+                <div class="mb-4 flex items-center justify-center h-32 w-full bg-gray-50 rounded border border-gray-100 text-4xl text-gray-300 group-hover:text-hemo-brand transition-colors">
                     ${typeData.icon}
                 </div>`;
         }
@@ -128,14 +104,23 @@ function renderGrid() {
             ${imageHtml}
             <div class="flex flex-col flex-grow w-full">
                 <div class="flex items-center justify-between gap-2 mb-2 w-full">
-                    <span class="font-mono font-bold text-white text-xs bg-slate-900/80 px-2 py-1 rounded border border-slate-700 truncate max-w-[80%] group-hover:border-blue-500/50 transition-colors">${inst.code}</span>
-                    <div class="h-2 w-2 rounded-full ${indicatorClasses}"></div>
+                    <span class="font-mono font-bold text-hemo-brand text-[10px] bg-red-50 px-2 py-0.5 rounded border border-red-100 truncate max-w-[85%]">
+                        ${inst.code}
+                    </span>
+                    <div class="h-1.5 w-1.5 rounded-full ${indicatorClasses}"></div>
                 </div>
-                <h3 class="text-xs font-medium text-slate-200 mb-3 line-clamp-2 min-h-[2.5rem] uppercase tracking-wide group-hover:text-white">${inst.name}</h3>
+
+                <h3 class="text-xs font-bold text-gray-700 mb-2 line-clamp-2 leading-snug group-hover:text-hemo-brand transition-colors uppercase tracking-tight">
+                    ${inst.name}
+                </h3>
                 
-                <div class="grid grid-cols-2 gap-2 text-[10px] text-slate-400 font-mono border-t border-slate-700/50 pt-3 mt-auto w-full group-hover:border-slate-600">
-                    <div><span class="text-slate-600 uppercase">Rng:</span> ${inst.range}</div>
-                    <div class="text-right"><span class="text-slate-600 uppercase">Und:</span> ${inst.unit}</div>
+                <div class="flex justify-between items-end border-t border-gray-100 pt-2 mt-auto w-full">
+                    <div class="text-[10px] text-gray-400 font-mono">
+                        <span class="font-bold text-gray-500">RNG:</span> ${inst.range}
+                    </div>
+                    <div class="text-[10px] text-gray-400 font-mono">
+                         ${inst.unit}
+                    </div>
                 </div>
             </div>
         `;
@@ -143,7 +128,7 @@ function renderGrid() {
     });
 }
 
-// --- FUNÇÕES DO MODAL (Mantive igual, só colei aqui para não faltar) ---
+// --- MODAL ---
 const modalBackdrop = document.getElementById('modal-backdrop');
 const modalContentBox = document.getElementById('modal-content-box');
 const modalInjection = document.getElementById('modal-details-injection');
@@ -156,15 +141,16 @@ function openModal(inst) {
     let largeImageHtml;
     if (inst.image && inst.image.trim() !== '') {
         largeImageHtml = `
-            <div class="h-64 md:h-auto md:w-2/5 bg-slate-900/50 flex items-center justify-center p-4 border-b md:border-b-0 md:border-r border-slate-700">
-                 <img src="${inst.image}" alt="${inst.code}" class="max-h-full max-w-full object-contain drop-shadow-lg" onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'text-slate-500 text-6xl\'>${typeData.icon}</div><div class=\'text-slate-400 mt-2\'>Imagem indisponível</div>'">
+            <div class="h-48 md:h-auto md:w-1/3 bg-gray-50 flex items-center justify-center p-4 border-b md:border-b-0 md:border-r border-gray-100">
+                 <img src="${inst.image}" alt="${inst.code}" class="max-h-full max-w-full object-contain mix-blend-multiply" 
+                 onerror="this.onerror=null; this.parentNode.innerHTML='<div class=\'text-gray-300 text-6xl\'>${typeData.icon}</div>'">
             </div>
         `;
     } else {
         largeImageHtml = `
-            <div class="h-64 md:h-auto md:w-2/5 bg-slate-900/50 flex flex-col items-center justify-center p-4 border-b md:border-b-0 md:border-r border-slate-700 text-slate-600">
-                 <div class="text-8xl mb-4 opacity-80">${typeData.icon}</div>
-                 <div class="text-sm font-mono tracking-wider opacity-60">TAG: ${inst.code}</div>
+            <div class="h-48 md:h-auto md:w-1/3 bg-gray-50 flex flex-col items-center justify-center p-4 border-b md:border-b-0 md:border-r border-gray-100 text-gray-300">
+                 <div class="text-6xl mb-2 text-hemo-brand opacity-40">${typeData.icon}</div>
+                 <div class="text-xs font-mono text-gray-400">Sem imagem</div>
             </div>
         `;
     }
@@ -172,44 +158,38 @@ function openModal(inst) {
     modalInjection.innerHTML = `
         <div class="flex flex-col md:flex-row md:min-h-[400px]">
             ${largeImageHtml}
-            <div class="p-6 md:p-8 flex-1 flex flex-col">
-                <div class="mb-6">
-                    <div class="inline-block bg-blue-500/20 text-blue-300 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider mb-3 border border-blue-500/30">
-                        ${moduleData.name}
+            
+            <div class="p-6 md:p-8 flex-1 flex flex-col bg-white">
+                <div class="mb-4 border-b border-gray-100 pb-4">
+                    <div class="flex justify-between items-start mb-2">
+                         <div class="inline-block bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-wider">
+                            ${moduleData.name}
+                        </div>
                     </div>
-                    <h2 class="text-3xl font-bold text-white mb-2 leading-tight">${inst.name}</h2>
-                    <h3 class="text-xl text-blue-400 font-mono bg-slate-900/50 inline-block px-3 py-1 rounded-md border border-slate-700/50">${inst.code}</h3>
-                </div>
-
-                <div class="flex items-center gap-3 mb-6 pb-6 border-b border-slate-700/50">
-                     <span class="text-3xl">${typeData.icon}</span>
-                     <div>
-                        <div class="text-xs text-slate-500 uppercase">Tipo de Instrumento</div>
-                        <div class="text-lg font-semibold text-${typeData.color}-300">${typeData.label}</div>
-                     </div>
+                    <h2 class="text-xl md:text-2xl font-bold text-hemo-brand mb-1 leading-tight uppercase">${inst.name}</h2>
+                    <h3 class="text-sm font-mono text-gray-500 font-bold flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-hemo-brand"></span>
+                        ${inst.code}
+                    </h3>
                 </div>
 
                  <div class="mb-6 flex-grow">
-                     <h4 class="text-sm text-slate-400 font-bold uppercase mb-2 tracking-wider">Descrição Funcional</h4>
-                     <p class="text-slate-300 leading-relaxed text-sm">
-                        ${inst.description || 'Nenhuma descrição funcional detalhada disponível para este tag no momento. Consulte a documentação técnica de P&ID.'}
+                     <h4 class="text-[10px] text-gray-400 font-bold uppercase mb-2 tracking-wider flex items-center gap-2">
+                        Descrição Funcional
+                     </h4>
+                     <p class="text-gray-600 text-sm leading-relaxed text-justify bg-gray-50 p-3 rounded border border-gray-100">
+                        ${inst.description || 'Nenhuma descrição técnica disponível.'}
                      </p>
                  </div>
 
-                <div class="grid grid-cols-2 gap-4 bg-slate-900/30 p-4 rounded-xl border border-slate-700/50 mt-auto">
-                    <div>
-                        <div class="text-xs text-slate-500 uppercase mb-1 font-bold flex items-center gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
-                            Faixa (Range)
-                        </div>
-                        <div class="text-xl font-mono text-white">${inst.range}</div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-50 p-3 rounded border border-gray-100">
+                        <div class="text-[10px] text-gray-400 uppercase mb-1 font-bold">Faixa (Range)</div>
+                        <div class="text-base font-mono font-bold text-gray-700">${inst.range}</div>
                     </div>
-                    <div>
-                        <div class="text-xs text-slate-500 uppercase mb-1 font-bold flex items-center gap-1">
-                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg>
-                            Unidade Eng.
-                        </div>
-                        <div class="text-xl font-mono text-white">${inst.unit}</div>
+                    <div class="bg-gray-50 p-3 rounded border border-gray-100">
+                        <div class="text-[10px] text-gray-400 uppercase mb-1 font-bold">Unidade</div>
+                        <div class="text-base font-mono font-bold text-gray-700">${inst.unit}</div>
                     </div>
                 </div>
             </div>
@@ -217,12 +197,12 @@ function openModal(inst) {
     `;
 
     modalBackdrop.classList.remove('hidden');
-    setTimeout(() => {
+    requestAnimationFrame(() => {
         modalBackdrop.classList.remove('opacity-0');
         modalContentBox.classList.remove('scale-95', 'opacity-0');
         modalContentBox.classList.add('scale-100', 'opacity-100');
-        body.classList.add('modal-open');
-    }, 10);
+    });
+    body.classList.add('modal-open');
 }
 
 function closeModal() {
@@ -230,22 +210,22 @@ function closeModal() {
     modalContentBox.classList.remove('scale-100', 'opacity-100');
     modalContentBox.classList.add('scale-95', 'opacity-0');
     body.classList.remove('modal-open');
-
-    setTimeout(() => {
-        modalBackdrop.classList.add('hidden');
-    }, 300);
+    setTimeout(() => { modalBackdrop.classList.add('hidden'); }, 300);
 }
 
-// Fechar modal clicando fora
 modalBackdrop.addEventListener('click', (e) => {
-    if (e.target === modalBackdrop) {
-        closeModal();
-    }
+    if (e.target === modalBackdrop) closeModal();
 });
 window.closeModal = closeModal;
 
-// --- INICIALIZAÇÃO ---
-// Carrega o valor inicial do select (normalmente ahu-0209)
-if(ahuSelector) {
+if (ahuSelector) {
+    ahuSelector.addEventListener('change', (e) => {
+        loadSystemData(e.target.value);
+    });
     loadSystemData(ahuSelector.value);
 }
+
+document.getElementById('search-input').addEventListener('input', (e) => {
+    searchTerm = e.target.value;
+    renderGrid();
+});

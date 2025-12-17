@@ -1,7 +1,17 @@
 [
-    { "id": 101, "code": "AHU-0201", "name": "Unidade de Tratamento Secundária", "type": "equipment", "module": "hvac", "range": "42.000,0", "unit": "kcal/h", "image": "fotos/ahu.jpg", "description": "MODELO: TRANE - NÚMERO DE SÉRIE: 112 - TAG: AHU-0201" },
-    { "id": 102, "code": "AHU-0201 TT-001", "name": "Temp Entrada", "type": "temperature", "module": "hvac", "range": "0-80", "unit": "°C", "image": "fotos/MT-TT.jpg", "description": "Temperatura de entrada da AHU 0201." },
-    { "id": 103, "code": "AHU-0201 PDT-001", "name": "Pressão Diferencial G4", "type": "pressure", "module": "hvac", "range": "0-500", "unit": "Pa", "image": "fotos/PDT_22ADP-584.jpg", "description": "Filtros primários." },
-    { "id": 104, "code": "AHU-0201 V-001", "name": "Válvula de Água Gelada", "type": "valve", "module": "hvac", "range": "0-100", "unit": "%", "image": "", "description": "Controle de fluxo de água gelada." },
-    { "id": 105, "code": "AHU-0201 YS-001", "name": "Detector de Fumaça", "type": "detect", "module": "hvac", "range": "ON/OFF", "unit": "-", "image": "fotos/SM-501-P.jpg", "description": "Segurança contra incêndio." }
+    { "id": 101, "code": "AHU-0201", "name": "Unidade de Tratamento de Ar Principal", "type": "equipment", "module": "hvac", "range": "55.775,2", "unit": "kcal/h", "image": "fotos/AHU-0201-F0.jpeg", "description": "MODELO: LRT-H 20.0 ATI - NÚMERO DE SÉRIE: 827 - TAG: AHU-0201 - BLOCO: 02" },
+    { "id": 102, "code": "AHU-0201 TT-001", "name": "Transmissor de Temperatura e Umidade", "type": "temperature", "module": "hvac", "range": "0-80", "unit": "°C", "image": "fotos/MT-TT.jpg", "description": "TMonitoramento da temperatura de retorno." },
+    { "id": 103, "code": "AHU-0201 PDT-001", "name": "Transmissor de Pressão Diferencial", "type": "pressure", "module": "hvac", "range": "-100...2500 ", "unit": "Pa", "image": "fotos/AHU-0201-PDT-001.jpeg", "description": "Filtros primários." },
+    { "id": 104, "code": "AHU-0201 PDSH-001", "name": "Chave de Pressão Alta", "type": "pressure", "module": "hvac", "range": "40-600", "unit": "Pa", "image": "fotos/AHU-0201-PDSH-001.jpeg", 	"description": "Pressostato de segurança filtros." },
+    { "id": 105, "code":"AHU-0201 YS-001","name":"Detector de Fumaça","type":"detect","module":"hvac","range":"ON/OFF","unit":"-",	"image":"fotos/AHU-0201-YS-001.jpeg","description":"Segurança contra incêndio." },
+    { "id": 106, "code": "AHU-0201 DPAE-001", "name": "Damper de Ar Externo", "type": "valve", "module": "hvac", "range": "On/Off", "unit": "-", "image": "fotos/AHU-0201-DPAE-001.jpeg", "description": "Atuador para damper de ar externo." },
+    { "id": 107, "code": "AHU-0201 DPR-001", "name": "Damper de Retorno", "type": "valve", "module": "hvac", "range": "On/Off", "unit": "", "image": "fotos/AHU-0201-DPR-001.jpeg", "description": "Regulador mecânico auto-operado." },
+    { "id": 108, "code": "AHU-0201 PDI-001", "name": "Manômetro", "type": "pressure", "module": "hvac", "range": "40-0-20", "unit": "Pa", "image": "fotos/AHU-0201-PDI-001.jpeg", "description": "Leitura local no campo." },
+    { "id": 109, "code": "AHU-0201 HSE-001", "name": "Chave de Segurança", "type": "general", "module": "hvac", "range": "0-100", "unit": "", "image": "fotos/AHU-0201-HSE-001.jpeg", "description": "Chave de segurança." },
+    { "id": 110, "code": "AHU-0201 PDSH-002", "name": "Chave de Pressão Alta", "type": "pressure", "module": "hvac", "range": "40-600", "unit": "Pa", "image": "fotos/AHU-0201-PDSH-002.jpeg", "description": "Obstrução severa nos filtros." },
+    { "id": 111, "code": "AHU-0201 PDI-002", "name": "Manômetro Redundante", "type": "pressure", "module": "hvac", "range": "40-0-20", "unit": "Pa", "image": "fotos/AHU-0201-PDI-002.jpeg", "description": "Indicador local redundante." },
+    { "id": 112, "code": "AHU-0201 MT-TT-001", "name": "Transmissor de Temperatura e Umidade", "type": "temperature", "module": "hvac", "range": "0-80", "unit": "°C", "image": "fotos/MT-TT.jpg", "description": "Sensor secundário controle de temperatura." },
+    { "id": 113, "code": "AHU-0201 PDT-002", "name": "Transmissor de Pressão Diferencial", "type": "pressure", "module": "hvac", "range": "-100...2500 ", "unit": "Pa", "image": "fotos/AHU-0201-PDT-002.jpeg", "description": "Filtros secundários." },
+    { "id": 114, "code": "AHU-0201 YS-002", "name": "Detector de Fumaça", "type": "detect", "module": "hvac", "range": "ON/OFF", "unit": "-", "image": "fotos/AHU-0201-YS-002.jpeg", "description": "Detector secundário de fumaça." }
+
 ]
