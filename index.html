@@ -3,21 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel AHU - Padrão Hemobrás</title>
-    
+    <title>Portal de Ativos - Hemobrás</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/style.css">
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         hemo: {
-                            brand: '#781316',    /* O Vinho Oficial do Site */
-                            brandLight: '#962A2D', /* Um tom um pouco mais claro para hover */
-                            gray: '#F8F8F8',     /* Fundo cinza bem claro (gov) */
-                            text: '#333333',     /* Texto padrão escuro */
+                            brand: '#781316',
+                            brandLight: '#962A2D',
+                            gray: '#F8F8F8',
+                            text: '#333333',
                         }
                     },
                     fontFamily: {
@@ -30,75 +27,74 @@
 </head>
 <body class="h-screen w-screen bg-hemo-gray text-hemo-text flex flex-col overflow-hidden">
 
-        <div class="bg-hemo-brand text-white shadow-lg shrink-0 relative z-20">
-        <div class="max-w-7xl mx-auto px-6 py-3 flex flex-col md:flex-row justify-between items-center gap-4">
-            
-            <div class="flex items-center gap-4 w-full md:w-auto">
+    <div class="bg-white border-b border-gray-200 px-6 py-1 flex justify-between items-center text-[10px] md:text-xs text-gray-500 uppercase font-bold tracking-wider shrink-0">
+        <div class="flex gap-4"><span>Brasil</span></div>
+        <div class="flex gap-4"><span>Acesso à informação</span></div>
+    </div>
+
+    <div class="bg-hemo-brand text-white shadow-lg shrink-0 relative z-20">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
                 <div class="bg-white px-3 py-1.5 rounded-lg shadow-sm border-b-2 border-red-900/20">
-                    <img src="fotos/logo-hemobras.png" alt="Logo Hemobrás" class="h-10 md:h-12 w-auto object-contain">
+                    <img src="fotos/logo-hemobras.png" alt="Logo Hemobrás" class="h-10 w-auto object-contain">
                 </div>
-                
                 <div class="hidden md:flex flex-col justify-center border-l border-red-800/50 pl-4 h-10">
-                    <h1 class="text-xs font-bold uppercase tracking-widest text-white leading-tight">Painel de</h1>
-                    <h1 class="text-xs font-bold uppercase tracking-widest text-red-200 leading-tight">Ativos</h1>
+                    <h1 class="text-xs font-bold uppercase tracking-widest text-white leading-tight">Portal de</h1>
+                    <h1 class="text-xs font-bold uppercase tracking-widest text-red-200 leading-tight">Gestão de Ativos</h1>
                 </div>
             </div>
-
-            <div class="flex items-center bg-hemo-brandLight/30 rounded-full px-4 py-1.5 border border-white/10 w-full md:w-auto hover:bg-hemo-brandLight/50 transition-colors">
-                <span class="text-xs text-red-100 mr-2 font-bold uppercase tracking-wide">Sistema:</span>
-                <select id="ahu-selector" class="bg-transparent text-white font-mono font-bold text-sm outline-none cursor-pointer w-full md:w-auto">
-                    <option value="ahu-0209" class="bg-hemo-brand text-white">AHU-0209</option>
-                    <option value="ahu-0201" class="bg-hemo-brand text-white">AHU-0201</option>
-                </select>
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-2 text-red-200 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-            </div>
-        </div>
-    </div>
-
-    <div class="flex-1 overflow-hidden relative flex flex-col max-w-7xl mx-auto w-full pt-4 md:pt-6 px-4">
-        
-        <div class="flex flex-col md:flex-row justify-between items-end md:items-center gap-4 mb-6 shrink-0">
             
-            <div class="relative w-full md:w-1/2 group">
-                <input type="text" id="search-input" placeholder="Buscar instrumento (Tag, Nome)..."
-                    class="w-full pl-5 pr-12 py-3 bg-white border border-gray-300 rounded-full shadow-sm text-sm text-gray-600 focus:outline-none focus:border-hemo-brand focus:ring-1 focus:ring-hemo-brand transition-all" />
-                
-                <div class="absolute right-1 top-1 bottom-1 w-10 bg-hemo-brand rounded-full flex items-center justify-center shadow-sm group-focus-within:bg-hemo-brandLight transition-colors cursor-pointer">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </div>
+            <div class="text-right hidden md:block">
+                <div class="text-xs text-red-200 uppercase font-bold tracking-wide">Bem-vindo</div>
+                <div class="text-sm font-bold text-white" id="data-atual">--/--/----</div>
             </div>
-
-            <div class="text-right flex items-center gap-2 text-sm">
-                <span class="text-gray-500 font-medium uppercase text-xs">Ativos Listados:</span>
-                <div class="bg-white border border-gray-200 px-3 py-1 rounded-md shadow-sm font-mono font-bold text-hemo-brand">
-                    <span id="count-display">0</span> <span class="text-gray-400 text-xs font-normal">/ <span id="total-display">0</span></span>
-                </div>
-            </div>
-        </div>
-
-        <div id="grid-container" class="flex-1 overflow-y-auto pb-6 pr-2 custom-scrollbar grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 auto-rows-min">
-            </div>
-        
-        <div class="py-2 text-center text-[10px] text-gray-400 border-t border-gray-200 uppercase tracking-widest mt-2 shrink-0">
-            Empresa Brasileira de Hemoderivados e Biotecnologia
         </div>
     </div>
 
-    <div id="modal-backdrop" class="fixed inset-0 bg-hemo-text/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm transition-opacity duration-300 opacity-0">
-        <div class="bg-white w-full max-w-3xl rounded-xl shadow-2xl relative transform transition-all duration-300 scale-95 opacity-0 flex flex-col max-h-[90vh] overflow-hidden border-t-8 border-hemo-brand" id="modal-content-box">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-white hover:bg-hemo-brand rounded-full p-2 transition-colors z-20">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-            </button>
-            <div id="modal-details-injection" class="flex-1 w-full overflow-y-auto custom-scrollbar"></div>
+    <div class="flex-1 overflow-y-auto p-6 md:p-10 flex items-center justify-center">
+        <div class="max-w-6xl w-full">
+            
+            <h2 class="text-2xl font-bold text-hemo-brand mb-8 border-b-2 border-red-100 pb-2 uppercase tracking-wide">
+                Selecione o Sistema
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                <a href="ahu.html" class="group bg-white rounded-xl shadow-sm border border-gray-200 p-8 flex flex-col items-center text-center hover:shadow-xl hover:border-hemo-brand transition-all duration-300 transform hover:-translate-y-1 cursor-pointer relative overflow-hidden">
+                    <div class="absolute top-0 left-0 w-full h-1 bg-gray-100 group-hover:bg-hemo-brand transition-colors duration-300"></div>
+                    
+                    <div class="h-20 w-20 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-4xl mb-6 group-hover:bg-hemo-brand group-hover:text-white transition-colors duration-300">
+                        🏭
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2 group-hover:text-hemo-brand">Sistemas AHU</h3>
+                    <p class="text-sm text-gray-500">Monitoramento das Unidades de Tratamento de Ar e climatização.</p>
+                </a>
+
+                <div class="group bg-white rounded-xl shadow-sm border border-gray-200 p-8 flex flex-col items-center text-center hover:shadow-md transition-all duration-300 opacity-70 hover:opacity-100 cursor-not-allowed relative">
+                    <div class="absolute top-3 right-3 bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded uppercase">Em Breve</div>
+                    <div class="h-20 w-20 bg-cyan-50 text-cyan-600 rounded-full flex items-center justify-center text-4xl mb-6 grayscale group-hover:grayscale-0 transition-all">
+                        ❄️
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Chiller / CAG</h3>
+                    <p class="text-sm text-gray-500">Central de Água Gelada e torres de resfriamento.</p>
+                </div>
+
+                <div class="group bg-white rounded-xl shadow-sm border border-gray-200 p-8 flex flex-col items-center text-center hover:shadow-md transition-all duration-300 opacity-70 hover:opacity-100 cursor-not-allowed relative">
+                    <div class="absolute top-3 right-3 bg-gray-100 text-gray-500 text-[10px] font-bold px-2 py-1 rounded uppercase">Em Breve</div>
+                    <div class="h-20 w-20 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center text-4xl mb-6 grayscale group-hover:grayscale-0 transition-all">
+                        💨
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Exaustores</h3>
+                    <p class="text-sm text-gray-500">Sistemas de exaustão e ventilação mecânica.</p>
+                </div>
+
+            </div>
         </div>
     </div>
 
-    <script src="js/script.js"></script>
+    <script>
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('data-atual').innerText = new Date().toLocaleDateString('pt-BR', options);
+    </script>
 </body>
 </html>
